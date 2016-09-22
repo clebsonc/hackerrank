@@ -18,7 +18,6 @@ void insertion_sort(int *p, int n){
       j--;
     }
     p[j] = temp;
-    //std::cout << "(i,j) = (" <<  i << ", " << j << ")" << std::endl;
     print_array(p, n);
   }
 }
@@ -40,8 +39,6 @@ int main(){
   read_values_into_array(p, n);
 
   insertion_sort(p, n);
-
-  //print_array(p, n);
 
   delete[] p;
 
