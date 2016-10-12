@@ -16,3 +16,4 @@ int main(){
   std::cout << "The total meal cost is " << cost << " dollars.";
   return 0;
 }
+
