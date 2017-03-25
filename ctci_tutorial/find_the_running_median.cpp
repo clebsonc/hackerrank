@@ -11,54 +11,54 @@ struct comparator{
   }
 };
 
-void print_queue(std::priority_queue<int, std::vector<int>, comparator> pq){
-  while (!pq.empty()){
-    std::cout << pq.top() << " ";
-    pq.pop();
-  }
-  std::cout << std::endl;
-}
-
-void transfer_elements_queue(std::priority_queue<int> & max_pq, 
-    std::priority_queue<int, std::vector<int>, comparator> & min_pq,
-    int qt_elements){
-  for (int i = 0; i <= qt_elements; i++){
-    int value = max_pq.top();
+void balance_queue(std::priority_queue<int, std::vector<int>, comparator> & min_pq,
+                   std::priority_queue<int> & max_pq){
+  int difference = min_pq.size() - max_pq.size();
+  if (difference == -2){  // max_pq is bigger than min_pq
+    min_pq.emplace(max_pq.top());
     max_pq.pop();
+  }
+  else if (difference == 2){  // min_pq is bigger
+    max_pq.emplace(min_pq.top());
+    min_pq.pop();
+  }
+}
+
+void insert_value(std::priority_queue<int, std::vector<int>, comparator> & min_pq,
+                  std::priority_queue<int> & max_pq, int value){
+  if (max_pq.empty() || value > max_pq.top()){
     min_pq.emplace(value);
-  }
-}
-
-void print_median(std::priority_queue<int> max_pq){
-  std::priority_queue<int, std::vector<int>, comparator> min_pq;
-  int mid = max_pq.size()/2;
-  bool odd = max_pq.size() % 2 ? true : false;
-  float median = 0.0;
-  if (odd){
-    transfer_elements_queue(max_pq, min_pq, mid);
-    median = min_pq.top();
   } 
-  else{  // it's an even number
-    transfer_elements_queue(max_pq, min_pq, mid-1);
-    median = (max_pq.top() + min_pq.top()) / 2.;
+  else{
+    max_pq.emplace(value);
   }
-  std::cout << std::fixed << std::setprecision(1);
-  std::cout << median << std::endl;
+  balance_queue(min_pq, max_pq);
 }
 
+void print_median(std::priority_queue<int, std::vector<int>, comparator> & min_pq,
+                  std::priority_queue<int> & max_pq){
+  if (min_pq.size() == max_pq.size())
+    std::cout << (min_pq.top() + max_pq.top()) / 2.0 << std::endl;
+  else if (min_pq.size() > max_pq.size())
+    std::cout << float(min_pq.top()) << std::endl;
+  else
+    std::cout << float(max_pq.top()) << std::endl;
+}
 
 void read_values(const int n){
   std::priority_queue<int> max_pq;
-  int value;
+  std::priority_queue<int, std::vector<int>, comparator> min_pq;
+  int value = 0;
   for (int i = 0; i < n; i++){
     std::cin >> value;
-    max_pq.emplace(value);
-    print_median(max_pq);
+    insert_value(min_pq, max_pq, value);
+    print_median(min_pq, max_pq);
   }
 }
 
 
 int main(){
+  std::cout << std::fixed << std::setprecision(1);
   int n = 0;
   std::cin >> n;
   read_values(n);
