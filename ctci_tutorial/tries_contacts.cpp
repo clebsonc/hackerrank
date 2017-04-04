@@ -5,25 +5,28 @@
 
 class Node{
   public:
-    std::unordered_map<char, Node*> trie;
+    std::unordered_map<char, Node*> values;
     bool end_word;
       
-    Node(){}
+    Node():end_word{true}{}
+};
 
-    void add_word(std::string s){
-      std::unordered_map<char, Node*> * n = &trie;
+
+class Trie{
+  private:
+    Node root;
+    Node * current;
+
+  public:
+    void add_word(const std::string & s){
       for (char c : s){
-        std::unordered_map<char, Node*>::iterator it = 
-        if (n->empty() || ){
-          n->emplace(c, new Node());
-        }
-        else if (
+        if (root.
       }
     }
 };
 
 int main(){
-  Node a;
+  Trie a;
   a.add_word("abc");
 
   return 0;
